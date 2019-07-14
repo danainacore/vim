@@ -1753,6 +1753,10 @@ EXTERN char e_nowhitespace[]	INIT(= N_("E274: No white space allowed before pare
 EXTERN char e_lock_unlock[]	INIT(= N_("E940: Cannot lock or unlock variable %s"));
 #endif
 
+#ifdef FEAT_SYN_HL
+EXTERN char msg_no_items[] INIT(= N_("No Syntax items defined for this buffer"));
+#endif
+
 #ifdef FEAT_GUI_MAC
 EXTERN short disallow_gui	INIT(= FALSE);
 #endif
