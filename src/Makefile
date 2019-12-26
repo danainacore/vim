@@ -1679,6 +1679,7 @@ BASIC_SRC = \
 	term.c \
 	terminal.c \
 	testing.c \
+	textformat.c \
 	textprop.c \
 	time.c \
 	ui.c \
@@ -1821,6 +1822,7 @@ OBJ_COMMON = \
 	objects/term.o \
 	objects/terminal.o \
 	objects/testing.o \
+	objects/textformat.o \
 	objects/textprop.o \
 	objects/time.o \
 	objects/ui.o \
@@ -1995,6 +1997,7 @@ PRO_AUTO = \
 	terminal.pro \
 	termlib.pro \
 	testing.pro \
+	textformat.pro \
 	textprop.pro \
 	time.pro \
 	ui.pro \
@@ -3468,6 +3471,9 @@ objects/terminal.o: terminal.c $(TERM_DEPS)
 objects/testing.o: testing.c
 	$(CCC) -o $@ testing.c
 
+objects/textformat.o: textformat.c
+	$(CCC) -o $@ textformat.c
+
 objects/textprop.o: textprop.c
 	$(CCC) -o $@ textprop.c
 
@@ -4056,6 +4062,10 @@ objects/terminal.o: terminal.c vim.h protodef.h auto/config.h feature.h os_unix.
  proto.h globals.h libvterm/include/vterm.h \
  libvterm/include/vterm_keycodes.h
 objects/testing.o: testing.c vim.h protodef.h auto/config.h feature.h os_unix.h \
+ auto/osdef.h ascii.h keymap.h term.h macros.h option.h beval.h \
+ proto/gui_beval.pro structs.h regexp.h gui.h alloc.h ex_cmds.h spell.h \
+ proto.h globals.h
+objects/textformat.o: textformat.c vim.h protodef.h auto/config.h feature.h os_unix.h \
  auto/osdef.h ascii.h keymap.h term.h macros.h option.h beval.h \
  proto/gui_beval.pro structs.h regexp.h gui.h alloc.h ex_cmds.h spell.h \
  proto.h globals.h
