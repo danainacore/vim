@@ -15,6 +15,7 @@ This subject is introduced in section |30.1| of the user manual.
 7. The error format			|error-file-format|
 8. The directory stack			|quickfix-directory-stack|
 9. Specific error file formats		|errorformats|
+10. Customizing the quickfix window	|quickfix-window-function|
 
 The quickfix commands are not available when the |+quickfix| feature was
 disabled at compile time.
@@ -1921,6 +1922,63 @@ error messages into a format that quickfix mode will understand.  See the
 start of the file about how to use it.  (This script is deprecated, see
 |compiler-perl|.)
 
+=============================================================================
+10. Customizing the quickfix window		*quickfix-window-function*
 
+The default format for the lines displayed in the quickfix window and location
+list window is:
+
+    <filename>|<lnum> col <n>|<text>
+
+This can be customized by setting the 'quickfixtextfunc' option to a Vim
+function.  This function will be called with a dict argument for every entry
+in the quickfix list. The dict argument will have the following fields:
+
+    quickfix	set to 1 when called for a quickfix list
+    id		quickfix or location list identifier
+    idx		index of the entry in the quickfix or location list
+
+The function should return a single line of text to display in the quickfix
+window for the entry identified by idx.
+
+If a quickfix or location list specific customization is needed, then the
+'quickfixtextfunc' attribute of the list can be set using the |setqflist()| or
+|setloclist()| function. This overrides the 'quickfixtextfunc' option setting.
+
+The example below tries to mimic the default behavior for the quickfix
+and location list windows.
+Example: >
+    func Myqffunc(info)
+	if a:info.quickfix
+	    let qfl = getqflist({'id' : a:info.id, 'idx' : a:info.idx,
+		    \ 'items' : 1}).items
+	else
+	    let qfl = getloclist(0, {'id' : a:info.id, 'idx' : a:info.idx,
+		    \ 'items' : 1}).items
+	endif
+	if empty(qfl)
+	    return ''
+	endif
+	let e = qfl[0]
+	let s = ''
+	if e.bufnr != 0
+	    let bname = bufname(e.bufnr)
+	    let s ..= fnamemodify(bname, ':.')
+	endif
+	let s ..= '|'
+	if e.lnum > 0
+	    let s ..= e.lnum
+	    if e.col != 0
+		let s ..= ' col ' . e.col
+	    endif
+	elseif e.pattern != ''
+	    let s ..= e.pattern
+	endif
+	let s ..= '| '
+	let s ..= substitute(e.text, '^\s\+', '', '')
+	return s
+    endfunc
+    set quickfixtextfunc=Myqffunc
+<
 
  vim:tw=78:ts=8:noet:ft=help:norl:
