@@ -4445,6 +4445,7 @@ qf_buf_add_line(
 	    return FAIL;
 
 	vim_strncpy(IObuff, qfbuf_text, IOSIZE - 1);
+	vim_free(qfbuf_text);
     }
     else
     {
